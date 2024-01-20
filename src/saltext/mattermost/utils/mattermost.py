@@ -10,7 +10,6 @@ Library for interacting with Mattermost Incoming Webhooks
           hook: 3tdgo8restnxiykdx88wqtxryr
           api_url: https://example.com
 """
-
 import http.client
 import logging
 import urllib.parse
@@ -39,7 +38,7 @@ def query(hook=None, api_url=None, data=None):
     result = salt.utils.http.query(url, method, data=data, decode=True, status=True)
 
     if result.get("status", None) == http.client.OK:
-        ret["message"] = "Message posted {} correctly".format(data)
+        ret["message"] = f"Message posted {data} correctly"
         return ret
     elif result.get("status", None) == http.client.NO_CONTENT:
         return True

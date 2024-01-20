@@ -13,8 +13,6 @@ Module for sending messages to Mattermost
           hook: peWcBiMOS9HrZG15peWcBiMOS9HrZG15
           api_url: https://example.com
 """
-
-
 import logging
 
 import salt.utils.json
@@ -41,9 +39,7 @@ def _get_hook():
 
     :return:            String: the hook string
     """
-    hook = __salt__["config.get"]("mattermost.hook") or __salt__["config.get"](
-        "mattermost:hook"
-    )
+    hook = __salt__["config.get"]("mattermost.hook") or __salt__["config.get"]("mattermost:hook")
     if not hook:
         raise SaltInvocationError("No Mattermost Hook found")
 
@@ -130,9 +126,9 @@ def post_message(message, channel=None, username=None, api_url=None, hook=None):
         parameters["username"] = username
     parameters["text"] = "```" + message + "```"  # pre-formatted, fixed-width text
     log.debug("Parameters: %s", parameters)
-    data = "payload={}".format(
+    data = "payload={}".format(  # pylint: disable=consider-using-f-string
         salt.utils.json.dumps(parameters)
-    )  # pylint: disable=blacklisted-function
+    )
     result = salt.utils.mattermost.query(api_url=api_url, hook=hook, data=data)
 
     return bool(result)

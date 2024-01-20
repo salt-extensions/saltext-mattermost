@@ -13,17 +13,14 @@ Module for sending messages to Mattermost
           hook: peWcBiMOS9HrZG15peWcBiMOS9HrZG15
           api_url: https://example.com
 """
-
-
 import logging
 
 import salt.utils.json
+import salt.utils.mattermost
+from salt.exceptions import SaltInvocationError
 
 # pylint: disable=import-error,no-name-in-module,redefined-builtin
-import salt.utils.mattermost
-
 # pylint: enable=import-error,no-name-in-module
-from salt.exceptions import SaltInvocationError
 
 log = logging.getLogger(__name__)
 
@@ -43,9 +40,7 @@ def _get_hook():
     Retrieves and return the Mattermost's configured hook
     :return:            String: the hook string
     """
-    hook = __salt__["config.get"]("mattermost.hook") or __salt__["config.get"](
-        "mattermost:hook"
-    )
+    hook = __salt__["config.get"]("mattermost.hook") or __salt__["config.get"]("mattermost:hook")
     if not hook:
         raise SaltInvocationError("No Mattermost Hook found")
 
@@ -129,9 +124,7 @@ def post_message(message, channel=None, username=None, api_url=None, hook=None):
     parameters["text"] = "```" + message + "```"  # pre-formatted, fixed-width text
     log.debug("Parameters: %s", parameters)
     data = salt.utils.json.dumps(parameters)
-    result = salt.utils.mattermost.query(
-        api_url=api_url, hook=hook, data="payload={}".format(data)
-    )
+    result = salt.utils.mattermost.query(api_url=api_url, hook=hook, data=f"payload={data}")
 
     if result:
         return True
@@ -166,10 +159,8 @@ def post_event(event, channel=None, username=None, api_url=None, hook=None):
 
     log.debug("Event: %s", event)
     log.debug("Event data: %s", event["data"])
-    message = "tag: {}\r\n".format(event["tag"])
+    message = "tag: {}\r\n".format(event["tag"])  # pylint: disable=consider-using-f-string
     for key, value in event["data"].items():
-        message += "{}: {}\r\n".format(key, value)
-    result = post_message(
-        message, channel=channel, username=username, api_url=api_url, hook=hook
-    )
+        message += f"{key}: {value}\r\n"
+    result = post_message(message, channel=channel, username=username, api_url=api_url, hook=hook)
     return bool(result)

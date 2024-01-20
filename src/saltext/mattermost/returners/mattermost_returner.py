@@ -42,7 +42,6 @@ To override individual configuration items, append --return_kwargs '{'key:': 'va
 
     salt '*' test.ping --return mattermost --return_kwargs '{'channel': '#random'}'
 """
-
 import logging
 
 import salt.returners
@@ -100,7 +99,7 @@ def returner(ret):
 
     returns = ret.get("return")
 
-    message = "id: {}\r\nfunction: {}\r\nfunction args: {}\r\njid: {}\r\nreturn: {}\r\n".format(
+    message = "id: {}\r\nfunction: {}\r\nfunction args: {}\r\njid: {}\r\nreturn: {}\r\n".format(  # pylint: disable=consider-using-f-string
         ret.get("id"), ret.get("fun"), ret.get("fun_args"), ret.get("jid"), returns
     )
 
@@ -126,9 +125,9 @@ def event_return(events):
     for event in events:
         log.debug("Event: %s", event)
         log.debug("Event data: %s", event["data"])
-        message = "tag: {}\r\n".format(event["tag"])
+        message = "tag: {}\r\n".format(event["tag"])  # pylint: disable=consider-using-f-string
         for key, value in event["data"].items():
-            message += "{}: {}\r\n".format(key, value)
+            message += f"{key}: {value}\r\n"
         result = post_message(channel, message, username, api_url, hook)
         if not result:
             is_ok = False
@@ -157,7 +156,7 @@ def post_message(channel, message, username, api_url, hook):
     result = salt.utils.mattermost.query(
         api_url=api_url,
         hook=hook,
-        data="payload={}".format(salt.utils.json.dumps(parameters)),
+        data=f"payload={salt.utils.json.dumps(parameters)}",
     )
 
     log.debug("result %s", result)
