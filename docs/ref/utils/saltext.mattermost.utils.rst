@@ -1,6 +1,5 @@
+saltext.mattermost.utils
+========================
 
-saltext.mattermost.utils.mattermost
-===================================
-
-.. automodule:: saltext.mattermost.utils.mattermost
+.. automodule:: saltext.mattermost.utils
     :members:
