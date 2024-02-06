@@ -8,7 +8,8 @@ docs_url: ''
 license: apache
 loaders:
   - module
-  - state
+  - returner
+  - runner
 max_salt_version: 3006
 no_saltext_namespace: false
 package_name: mattermost

@@ -1,9 +1,12 @@
 """
 Library for interacting with Mattermost Incoming Webhooks
-:configuration: This module can be used by specifying the name of a
-    configuration profile in the minion config, minion pillar, or master
-    config.
+
+    :configuration: This module can be used by specifying the name of a
+        configuration profile in the minion config, minion pillar, or master
+        config.
+
     For example:
+
     .. code-block:: yaml
 
         mattermost:

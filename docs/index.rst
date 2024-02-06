@@ -16,7 +16,9 @@ Salt Extension for interacting with Mattermost
   :hidden:
 
   ref/modules/index
-  ref/states/index
+  ref/returners/index
+  ref/runners/index
+  ref/utils/index
 
 .. toctree::
   :maxdepth: 2

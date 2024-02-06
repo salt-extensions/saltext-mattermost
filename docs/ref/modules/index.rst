@@ -10,4 +10,3 @@ _________________
     :toctree:
 
     mattermost
-    mattermost_mod
