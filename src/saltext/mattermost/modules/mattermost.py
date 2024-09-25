@@ -13,6 +13,7 @@ Module for sending messages to Mattermost
           hook: peWcBiMOS9HrZG15peWcBiMOS9HrZG15
           api_url: https://example.com
 """
+
 import logging
 
 import salt.utils.json

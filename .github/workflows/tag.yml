@@ -1,19 +1,34 @@
+<<<<<<< before updating
+=======
+---
+>>>>>>> after updating
 name: Tagged Releases
 
 on:
   push:
     tags:
+<<<<<<< before updating
       - "v*"
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+=======
+      - "v*"  # Only tags starting with "v" for "v1.0.0", etc.
+
+jobs:
+  get_tag_version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+>>>>>>> after updating
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Extract tag name
         id: get_version
+<<<<<<< before updating
         run: echo "VERSION=$(echo ${GITHUB_REF#refs/tags/v})" >> $GITHUB_ENV
 
       - name: CI
@@ -24,3 +39,20 @@ jobs:
         permissions:
           contents: write
           pull-requests: read
+=======
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
+
+  call_central_workflow:
+    needs: get_tag_version
+    uses: salt-extensions/central-artifacts/.github/workflows/ci.yml@main
+    with:
+      deploy-docs: true
+      release: true
+      version: ${{ needs.get_tag_version.outputs.version }}
+    permissions:
+      contents: write
+      id-token: write
+      pages: write
+      pull-requests: read
+    secrets: inherit
+>>>>>>> after updating

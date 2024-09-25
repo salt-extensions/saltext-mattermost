@@ -4,6 +4,7 @@ Returners Directory
 :func:`get_returner_options` is a general purpose function that returners may
 use to fetch their configuration options.
 """
+
 import logging
 
 log = logging.getLogger(__name__)

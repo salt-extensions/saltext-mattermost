@@ -13,6 +13,7 @@ Library for interacting with Mattermost Incoming Webhooks
           hook: 3tdgo8restnxiykdx88wqtxryr
           api_url: https://example.com
 """
+
 import http.client
 import logging
 import urllib.parse

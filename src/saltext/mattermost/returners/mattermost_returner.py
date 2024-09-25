@@ -42,6 +42,7 @@ To override individual configuration items, append --return_kwargs '{'key:': 'va
 
     salt '*' test.ping --return mattermost --return_kwargs '{'channel': '#random'}'
 """
+
 import logging
 
 import salt.returners
