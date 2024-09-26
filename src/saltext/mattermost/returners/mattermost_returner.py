@@ -1,42 +1,19 @@
 """
-Return salt data via mattermost
+Return Salt data via Mattermost
 
-.. versionadded:: 2017.7.0
+.. important::
 
-The following fields can be set in the minion conf file:
+    Using this module requires the :ref:`general setup <mattermost-setup>`.
 
-.. code-block:: yaml
-
-    mattermost.hook (required)
-    mattermost.username (optional)
-    mattermost.channel (optional)
-
-Alternative configuration values can be used by prefacing the configuration.
-Any values not found in the alternative configuration will be pulled from
-the default location:
-
-.. code-block:: yaml
-
-    mattermost.channel
-    mattermost.hook
-    mattermost.username
-
-mattermost settings may also be configured as:
-
-.. code-block:: yaml
-
-    mattermost:
-      channel: RoomName
-      hook: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-      username: user
-
-To use the mattermost returner, append '--return mattermost' to the salt command.
+Usage
+-----
+To use the mattermost returner, append ``--return mattermost`` to the Salt command.
 
 .. code-block:: bash
 
     salt '*' test.ping --return mattermost
 
-To override individual configuration items, append --return_kwargs '{'key:': 'value'}' to the salt command.
+To override individual configuration items, append ``--return_kwargs '{'key:': 'value'}'`` to the Salt command.
 
 .. code-block:: bash
 
@@ -46,8 +23,9 @@ To override individual configuration items, append --return_kwargs '{'key:': 'va
 import logging
 
 import salt.returners
-import salt.utils.json
-import salt.utils.mattermost
+from salt.utils import json
+
+from saltext.mattermost.utils import mattermost
 
 log = logging.getLogger(__name__)
 
@@ -99,8 +77,7 @@ def returner(ret):
         ret.get("id"), ret.get("fun"), ret.get("fun_args"), ret.get("jid"), returns
     )
 
-    mattermost = post_message(channel, message, username, api_url, hook)
-    return mattermost
+    return post_message(channel, message, username, api_url, hook)
 
 
 def event_return(events):
@@ -121,7 +98,7 @@ def event_return(events):
     for event in events:
         log.debug("Event: %s", event)
         log.debug("Event data: %s", event["data"])
-        message = "tag: {}\r\n".format(event["tag"])  # pylint: disable=consider-using-f-string
+        message = f"tag: {event['tag']}\r\n"
         for key, value in event["data"].items():
             message += f"{key}: {value}\r\n"
         result = post_message(channel, message, username, api_url, hook)
@@ -149,10 +126,10 @@ def post_message(channel, message, username, api_url, hook):
         parameters["username"] = username
     parameters["text"] = "```" + message + "```"  # pre-formatted, fixed-width text
     log.debug("Parameters: %s", parameters)
-    result = salt.utils.mattermost.query(
+    result = mattermost.query(
         api_url=api_url,
         hook=hook,
-        data=f"payload={salt.utils.json.dumps(parameters)}",
+        data=f"payload={json.dumps(parameters)}",
     )
 
     log.debug("result %s", result)

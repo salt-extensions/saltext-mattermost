@@ -4,10 +4,9 @@ _________
 Utilities
 _________
 
-.. currentmodule:: saltext.mattermost
+.. currentmodule:: saltext.mattermost.utils
 
 .. autosummary::
     :toctree:
 
-    utils
-    utils.mattermost
+    mattermost

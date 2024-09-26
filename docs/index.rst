@@ -9,6 +9,7 @@ Salt Extension for interacting with Mattermost
   :hidden:
 
   topics/installation
+  topics/configuration
 
 .. toctree::
   :maxdepth: 2

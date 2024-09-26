@@ -1,24 +1,18 @@
 """
 Module for sending messages to Mattermost
 
-.. versionadded:: 2017.7.0
+.. important::
 
-:configuration: This module can be used by either passing an api_url and hook
-    directly or by specifying both in a configuration profile in the salt
-    master/minion config. For example:
-
-    .. code-block:: yaml
-
-        mattermost:
-          hook: peWcBiMOS9HrZG15peWcBiMOS9HrZG15
-          api_url: https://example.com
+    You can optionally :ref:`add a configuration profile <mattermost-setup>`
+    to avoid having to pass `hook` and `api_url` to each invocation.
 """
 
 import logging
 
-import salt.utils.json
-import salt.utils.mattermost
 from salt.exceptions import SaltInvocationError
+from salt.utils import json
+
+from saltext.mattermost.utils import mattermost
 
 log = logging.getLogger(__name__)
 
@@ -26,11 +20,6 @@ __virtualname__ = "mattermost"
 
 
 def __virtual__():
-    """
-    Return virtual name of the module.
-
-    :return: The virtual name of the module.
-    """
     return __virtualname__
 
 
@@ -127,9 +116,7 @@ def post_message(message, channel=None, username=None, api_url=None, hook=None):
         parameters["username"] = username
     parameters["text"] = "```" + message + "```"  # pre-formatted, fixed-width text
     log.debug("Parameters: %s", parameters)
-    data = "payload={}".format(  # pylint: disable=consider-using-f-string
-        salt.utils.json.dumps(parameters)
-    )
-    result = salt.utils.mattermost.query(api_url=api_url, hook=hook, data=data)
+    data = f"payload={json.dumps(parameters)}"
+    result = mattermost.query(api_url=api_url, hook=hook, data=data)
 
     return bool(result)
