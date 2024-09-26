@@ -1,17 +1,5 @@
 """
 Library for interacting with Mattermost Incoming Webhooks
-
-    :configuration: This module can be used by specifying the name of a
-        configuration profile in the minion config, minion pillar, or master
-        config.
-
-    For example:
-
-    .. code-block:: yaml
-
-        mattermost:
-          hook: 3tdgo8restnxiykdx88wqtxryr
-          api_url: https://example.com
 """
 
 import http.client
@@ -27,6 +15,7 @@ log = logging.getLogger(__name__)
 def query(hook=None, api_url=None, data=None):
     """
     Mattermost object method function to construct and execute on the API URL.
+
     :param api_url:     The Mattermost API URL
     :param hook:        The Mattermost hook.
     :param data:        The data to be sent for POST method.
