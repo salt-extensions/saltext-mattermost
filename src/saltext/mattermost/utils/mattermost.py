@@ -13,6 +13,7 @@ Library for interacting with Mattermost Incoming Webhooks
           hook: 3tdgo8restnxiykdx88wqtxryr
           api_url: https://example.com
 """
+
 import http.client
 import logging
 import urllib.parse
@@ -43,20 +44,19 @@ def query(hook=None, api_url=None, data=None):
     if result.get("status", None) == http.client.OK:
         ret["message"] = f"Message posted {data} correctly"
         return ret
-    elif result.get("status", None) == http.client.NO_CONTENT:
+    if result.get("status", None) == http.client.NO_CONTENT:
         return True
-    else:
-        log.debug(url)
-        log.debug(data)
-        log.debug(result)
-        if "dict" in result:
-            _result = result["dict"]
-            if "error" in _result:
-                ret["message"] = result["error"]
-                ret["res"] = False
-                return ret
-            ret["message"] = "Message not posted"
-        else:
-            ret["message"] = "invalid_auth"
+    log.debug(url)
+    log.debug(data)
+    log.debug(result)
+    if "dict" in result:
+        _result = result["dict"]
+        if "error" in _result:
+            ret["message"] = result["error"]
             ret["res"] = False
+            return ret
+        ret["message"] = "Message not posted"
+    else:
+        ret["message"] = "invalid_auth"
+        ret["res"] = False
     return ret

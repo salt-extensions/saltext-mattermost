@@ -1,4 +1,5 @@
 import pytest
+
 import saltext.mattermost.modules.mattermost as mattermost_module
 
 

@@ -13,6 +13,7 @@ Module for sending messages to Mattermost
           hook: peWcBiMOS9HrZG15peWcBiMOS9HrZG15
           api_url: https://example.com
 """
+
 import logging
 
 import salt.utils.json
@@ -119,7 +120,7 @@ def post_message(message, channel=None, username=None, api_url=None, hook=None):
     if not message:
         log.error("message is a required option.")
 
-    parameters = dict()
+    parameters = {}
     if channel:
         parameters["channel"] = channel
     if username:
