@@ -120,7 +120,7 @@ def post_message(message, channel=None, username=None, api_url=None, hook=None):
     if not message:
         log.error("message is a required option.")
 
-    parameters = dict()
+    parameters = {}
     if channel:
         parameters["channel"] = channel
     if username:

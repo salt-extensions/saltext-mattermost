@@ -117,7 +117,7 @@ def post_message(message, channel=None, username=None, api_url=None, hook=None):
     if not message:
         log.error("message is a required option.")
 
-    parameters = dict()
+    parameters = {}
     if channel:
         parameters["channel"] = channel
     if username:
@@ -129,8 +129,7 @@ def post_message(message, channel=None, username=None, api_url=None, hook=None):
 
     if result:
         return True
-    else:
-        return result
+    return result
 
 
 def post_event(event, channel=None, username=None, api_url=None, hook=None):

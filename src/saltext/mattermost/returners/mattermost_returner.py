@@ -55,11 +55,6 @@ __virtualname__ = "mattermost"
 
 
 def __virtual__():
-    """
-    Return virtual name of the module.
-
-    :return: The virtual name of the module.
-    """
     return __virtualname__
 
 
@@ -96,7 +91,7 @@ def returner(ret):
 
     if not hook:
         log.error("mattermost.hook not defined in salt config")
-        return
+        return None
 
     returns = ret.get("return")
 
@@ -147,7 +142,7 @@ def post_message(channel, message, username, api_url, hook):
     :return:            Boolean if message was sent successfully.
     """
 
-    parameters = dict()
+    parameters = {}
     if channel:
         parameters["channel"] = channel
     if username:
